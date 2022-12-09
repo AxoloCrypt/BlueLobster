@@ -37,7 +37,7 @@ async def lobster(ctx):
     }
 
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download('https://www.youtube.com/watch?v=BCjzPXtIh_c')
+        ydl.download(['https://www.youtube.com/watch?v=BCjzPXtIh_c'])
 
     for file in os.listdir('./'):
         if file.endswith('.mp3'):
