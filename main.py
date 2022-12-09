@@ -3,6 +3,7 @@ import os
 from discord import FFmpegPCMAudio
 from discord.ext import commands
 import random
+import youtube_dl
 
 bot_token = os.environ['BOT_TOKEN']
 
@@ -25,6 +26,23 @@ async def lobster(ctx):
 
     channel = ctx.author.voice.channel
     voice = await channel.connect()
+
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+    }
+
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download('https://www.youtube.com/watch?v=BCjzPXtIh_c')
+
+    for file in os.listdir('./'):
+        if file.endswith('.mp3'):
+            os.rename(file, 'lobster.mp3')
+
     source = FFmpegPCMAudio("lobster.mp3")
     voice.play(source)
 
